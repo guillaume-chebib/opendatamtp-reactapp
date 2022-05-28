@@ -2,6 +2,7 @@ stages:
   - build
   - test
   - docker-build
+  - deploy
 
 build:
   stage: build
@@ -35,3 +36,12 @@ docker-build:
   script:
     - docker build --pull -t "$CI_REGISTRY_IMAGE" .
     - docker push "$CI_REGISTRY_IMAGE"
+
+deploy:
+  image:
+    name: bitnami/kubectl:latest
+    entrypoint: ['']
+  script:
+    - kubectl config get-contexts
+    - kubectl config use-context opendatamtp/react-app:reactapp
+    - kubectl get pods
